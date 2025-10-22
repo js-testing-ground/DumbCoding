@@ -1,41 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>DumbCoding - Code Smarter with AI</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="style.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DumbCoding – Learn to Code with AI</title>
+  <style>
+    :root {
+      --primary: #0077cc;
+      --background: #f9f9f9;
+      --text: #333;
+      --card-bg: #ffffff;
+      --card-border: #ddd;
+      --card-shadow: rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #fff;
+      padding: 2rem 1rem;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+
+    header h1 {
+      margin-bottom: 0.5rem;
+      font-size: 2.5rem;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .lessons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .lesson {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 1.25rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px var(--card-shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .lesson:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .lesson a {
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: bold;
+      display: block;
+      margin-top: 0.5rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
 </head>
 <body>
+
   <header>
     <h1>DumbCoding</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="lesson1.html">Lesson 1: Why Let AI Code?</a>
-      <a href="lesson2.html">Lesson 2: Asking AI for Help</a>
-    </nav>
+    <p>Learn how to code by letting AI do the heavy lifting. This site shows you how to use ChatGPT as your coding partner — without needing to master a language first.</p>
   </header>
+
   <main>
-    <section class="intro">
-      <h2>Welcome to DumbCoding</h2>
-      <p>
-        Learn how to code the smart way: by letting AI do the heavy lifting for you! 
-        This site is for absolute beginners who want to explore coding using large language models like ChatGPT, GitHub Copilot, or Gemini.
-      </p>
-      <p>
-        <strong>Tip:</strong> Coding today is less about memorizing syntax, and more about knowing how to ask the right questions. Start your journey below!
-      </p>
-    </section>
-    <section class="lessons">
-      <h3>Start Learning:</h3>
-      <ul>
-        <li><a href="lesson1.html">Lesson 1: Why Let AI Code?</a></li>
-        <li><a href="lesson2.html">Lesson 2: Asking AI for Help</a></li>
-      </ul>
-    </section>
+    <h2>Start Learning</h2>
+    <div class="lessons">
+      <div class="lesson">
+        <h3>Lesson 1: Why Let AI Code?</h3>
+        <p>Understand how ChatGPT can write working code from natural language prompts.</p>
+        <a href="lesson1.html">Start Lesson →</a>
+      </div>
+      <div class="lesson">
+        <h3>Lesson 2: Building a Simple Page</h3>
+        <p>Step-by-step: Use ChatGPT to build a basic website from scratch.</p>
+        <a href="lesson2.html">Start Lesson →</a>
+      </div>
+    </div>
   </main>
+
   <footer>
-    <p>&copy; 2025 DumbCoding. All rights reserved.</p>
+    © 2025 DumbCoding – Made with HTML, CSS & AI
   </footer>
+
 </body>
 </html>
