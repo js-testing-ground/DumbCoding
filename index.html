@@ -1,130 +1,544 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DumbCoding – Learn to Code with AI</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DumbCoding — Playful, Chaotic, Beautiful</title>
+  <meta name="description" content="A colorful, animated, and playful redesign — hover-reactive headings, moving components, and a cheerful minigame." />
   <style>
-    :root {
-      --primary: #0077cc;
-      --background: #f9f9f9;
-      --text: #333;
-      --card-bg: #ffffff;
-      --card-border: #ddd;
-      --card-shadow: rgba(0, 0, 0, 0.05);
+    :root{
+      --bg1: #0f172a; /* deep navy */
+      --bg2: #0b1020;
+      --accent1: #ff6b6b;
+      --accent2: #ffd166;
+      --accent3: #6be3ff;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.04);
+      --fw-bold: 700;
+      color-scheme: dark;
     }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial; background: radial-gradient(1200px 600px at 10% 20%, rgba(107,227,255,0.06), transparent), radial-gradient(900px 400px at 90% 80%, rgba(255,107,107,0.04), transparent), linear-gradient(180deg,var(--bg1),var(--bg2)); color:#e6eef8}
+    a{color:inherit;text-decoration:none}
 
-    * {
-      box-sizing: border-box;
-    }
+    /* floating confetti shapes */
+    .floaters{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+    .floater{position:absolute;width:16px;height:16px;border-radius:4px;opacity:0.9;transform:translate3d(0,0,0);mix-blend-mode:screen}
 
-    body {
-      font-family: system-ui, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: var(--background);
-      color: var(--text);
-      line-height: 1.6;
-    }
+    header{position:sticky;top:12px;margin:16px auto;max-width:1100px;padding:8px 16px;z-index:50;display:flex;align-items:center;gap:16px}
+    .logo{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));backdrop-filter: blur(6px);box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+    .logo .dot{width:14px;height:14px;border-radius:4px;background:linear-gradient(135deg,var(--accent1),var(--accent3));box-shadow:0 6px 18px rgba(107,227,255,0.08)}
+    nav{margin-left:auto;display:flex;gap:12px}
+    .navlink{padding:8px 12px;border-radius:10px;font-weight:600;cursor:pointer;transition:transform .18s cubic-bezier(.2,.9,.2,1), background .18s}
+    .navlink:hover{transform:translateY(-3px) rotate(-1deg);background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04))}
 
-    header {
-      background-color: #fff;
-      padding: 2rem 1rem;
-      text-align: center;
-      border-bottom: 1px solid #eee;
-    }
+    main{max-width:1100px;margin:28px auto;padding:24px;position:relative;z-index:10}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center}
+    .panel{padding:22px;border-radius:18px;background:linear-gradient(180deg,var(--glass),var(--glass-2));box-shadow:0 10px 30px rgba(2,6,23,0.6);backdrop-filter: blur(8px)}
 
-    header h1 {
-      margin-bottom: 0.5rem;
-      font-size: 2.5rem;
-    }
+    h1{font-size:clamp(28px,6vw,56px);line-height:1.02;margin:0}
+    .headline{display:inline-block;padding:6px 12px;border-radius:12px;font-weight:900;letter-spacing:-1px;background:linear-gradient(90deg,#ffffff08,#ffffff03);transition:transform .4s ease, filter .25s, text-shadow .25s}
 
-    header p {
-      font-size: 1.1rem;
-      color: #666;
-      max-width: 600px;
-      margin: 0 auto;
-    }
+    /* hover-reactive, animated heading */
+    .headline:hover{animation:floaty 1s ease-in-out infinite; transform:translateY(-6px) rotate(-1deg);}
+    @keyframes floaty{0%{filter:hue-rotate(0deg) drop-shadow(0 2px 8px rgba(0,0,0,0.3))}50%{filter:hue-rotate(40deg) drop-shadow(0 10px 40px rgba(0,0,0,0.45))}100%{filter:hue-rotate(0deg) drop-shadow(0 2px 8px rgba(0,0,0,0.3))}}
 
-    main {
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
+    /* animated color cycling for headings */
+    .candy{background-image:linear-gradient(90deg,var(--accent1),var(--accent2),var(--accent3),#b06cff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:slideRainbow 6s linear infinite}
+    @keyframes slideRainbow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
+    .lead{margin-top:12px;font-size:1.05rem;opacity:.95}
 
-    .lessons {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-    }
+    /* small interactive palette */
+    .palette{display:flex;gap:8px;margin-top:18px}
+    .swatch{width:36px;height:36px;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:transform .14s}
+    .swatch:hover{transform:translateY(-6px) scale(1.06)}
 
-    .lesson {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 1.25rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px var(--card-shadow);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
+    /* gallery */
+    .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:18px}
+    .card{padding:14px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));cursor:pointer;transition:transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s;display:flex;flex-direction:column;gap:10px}
+    .card:hover{transform:translateY(-8px) rotate(-1deg);box-shadow:0 22px 50px rgba(2,6,23,0.6)}
+    .card .thumb{height:120px;border-radius:10px;background:linear-gradient(135deg,var(--accent3),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#072033}
 
-    .lesson:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
+    /* interactive marquee */
+    .marquee{margin:18px 0;padding:12px;border-radius:12px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));overflow:hidden}
+    .marquee .track{display:inline-block;white-space:nowrap;animation:marq 18s linear infinite}
+    @keyframes marq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-    .lesson a {
-      text-decoration: none;
-      color: var(--primary);
-      font-weight: bold;
-      display: block;
-      margin-top: 0.5rem;
-    }
+    /* sections */
+    section{margin-top:20px}
 
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      color: #999;
-      font-size: 0.9rem;
-    }
+    /* modal */
+    .modal{position:fixed;inset:0;display:none;place-items:center;background:linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.8));z-index:100}
+    .modal .inner{width:min(880px,94vw);padding:20px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));}
 
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 2rem;
-      }
-    }
+    /* footer game area */
+    footer{margin-top:36px;padding:20px;border-radius:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.03));box-shadow:0 10px 40px rgba(2,6,23,0.6)}
+    .game-wrap{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+    .game-box{flex:1;min-width:360px}
+    .score{font-weight:800;padding:10px 14px;border-radius:12px;background:linear-gradient(90deg,var(--accent3),var(--accent2));color:#04202a}
+    .controls{display:flex;gap:10px;align-items:center}
+    .btn{padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.03);cursor:pointer;border:1px solid rgba(255,255,255,0.03);transition:transform .14s}
+    .btn:active{transform:translateY(2px)}
+
+    /* small utilities */
+    .muted{opacity:.7;font-size:.92rem}
+    .kicker{font-size:.9rem;opacity:.9}
+
+    @media (max-width:900px){.hero{grid-template-columns:1fr;}.panel.big{order:2}}
   </style>
 </head>
 <body>
+  <div class="floaters" aria-hidden="true"></div>
 
   <header>
-    <h1>DumbCoding</h1>
-    <p>Learn how to code by letting AI do the heavy lifting. This site shows you how to use ChatGPT as your coding partner — without needing to master a language first.</p>
+    <div class="logo" role="img" aria-label="dumbcoding logo">
+      <div class="dot" style="width:18px;height:18px;border-radius:6px"></div>
+      <div>
+        <div style="font-weight:800">DumbCoding</div>
+        <div style="font-size:12px;opacity:.7;margin-top:2px">Maverick Redesign</div>
+      </div>
+    </div>
+    <nav>
+      <div class="navlink" data-scroll="about">About</div>
+      <div class="navlink" data-scroll="gallery">Gallery</div>
+      <div class="navlink" data-scroll="play">Play</div>
+      <div class="navlink" data-scroll="contact">Contact</div>
+    </nav>
   </header>
 
   <main>
-    <h2>Start Learning</h2>
-    <div class="lessons">
-      <div class="lesson">
-        <h3>Lesson 1: Why Let AI Code?</h3>
-        <p>Understand how ChatGPT can write working code from natural language prompts.</p>
-        <a href="lesson1.html">Start Lesson →</a>
+    <div class="hero">
+      <div class="panel big">
+        <h1><span class="headline candy" id="headline">Make Something Ridiculously Colorful</span></h1>
+        <p class="lead">You asked for busy, animated, playful — so here it is. Everything wiggles a little, changes hue, and invites you to poke it. Click cards, toggle palettes, and revel in interactive silliness.</p>
+
+        <div class="palette" aria-hidden>
+          <div class="swatch" data-color="#ff6b6b" style="background:#ff6b6b"></div>
+          <div class="swatch" data-color="#ffd166" style="background:#ffd166"></div>
+          <div class="swatch" data-color="#6be3ff" style="background:#6be3ff"></div>
+          <div class="swatch" data-color="#b06cff" style="background:#b06cff"></div>
+        </div>
+
+        <div class="marquee" style="margin-top:18px">
+          <div class="track">✨ clickable ✦ animated ✦ hover me ✦ wiggle ✦ pop ✦ float ✦ drag ✦ click ✦ color ✦ repeat ✦</div>
+        </div>
+
+        <div class="kicker" style="margin-top:18px">Quick actions — try these:</div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <div class="btn" id="surpriseBtn">Surprise Me</div>
+          <div class="btn" id="toggleFloat">Toggle Floaters</div>
+          <div class="btn" id="openGallery">Open Gallery</div>
+        </div>
       </div>
-      <div class="lesson">
-        <h3>Lesson 2: Building a Simple Page</h3>
-        <p>Step-by-step: Use ChatGPT to build a basic website from scratch.</p>
-        <a href="lesson2.html">Start Lesson →</a>
+
+      <div class="panel" style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div class="muted">Live vibes</div>
+            <div style="font-weight:800;font-size:20px">Interactive Playground</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-weight:900;font-size:18px">v2.1</div>
+            <div style="font-size:12px;opacity:.7">freshly chaotic</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="card" id="card-spark" style="padding:10px">
+            <div class="thumb">SVG Lab</div>
+            <div style="font-weight:700">Procedural shapes</div>
+            <div class="muted">Click to expand a procedurally generated canvas sample.</div>
+          </div>
+          <div class="card" id="card-tilt" style="padding:10px">
+            <div class="thumb">Tilt Me</div>
+            <div style="font-weight:700">Interactive Tilt Cards</div>
+            <div class="muted">Move your mouse to tilt and push these cards away.</div>
+          </div>
+        </div>
+
+        <div style="margin-top:10px">
+          <div class="muted">Tips</div>
+          <ul style="margin:8px 0 0 16px">
+            <li>Hover the big heading. Don't be shy.</li>
+            <li>Pick a color swatch to repaint accents.</li>
+            <li>Open gallery to see clickable mini-projects.</li>
+          </ul>
+        </div>
       </div>
     </div>
+
+    <section id="gallery">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <h2 class="headline">Gallery of Tiny Experiments</h2>
+        <div class="muted">Click any card to explore</div>
+      </div>
+
+      <div class="gallery" style="margin-top:12px">
+        <div class="card gig" data-title="Color Bubbles" data-desc="A playground of draggable bubbles that react to your cursor.">
+          <div class="thumb">Bubbles</div>
+          <div style="font-weight:700">Color Bubbles</div>
+          <div class="muted">Drag, poke, pop. Each bubble loves attention.</div>
+        </div>
+        <div class="card gig" data-title="Chroma Grid" data-desc="A responsive grid that animates colors and responds to clicks.">
+          <div class="thumb">Grid</div>
+          <div style="font-weight:700">Chroma Grid</div>
+          <div class="muted">Click tiles to change their rhythm.</div>
+        </div>
+        <div class="card gig" data-title="Wobble Type" data-desc="Playful text that jiggles and skews when hovered.">
+          <div class="thumb">Type</div>
+          <div style="font-weight:700">Wobble Type</div>
+          <div class="muted">Hover headings to make them sing.</div>
+        </div>
+        <div class="card gig" data-title="SVG Lab" data-desc="Procedurally generated SVG blobs and stars.">
+          <div class="thumb">SVG</div>
+          <div style="font-weight:700">SVG Lab</div>
+          <div class="muted">Open to spawn a tight demo.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="play">
+      <h2 class="headline candy">Playground</h2>
+      <p class="muted">A couple of small interactive toys to keep your mouse busy.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+        <div class="panel">
+          <div style="font-weight:800">Pointer Trails</div>
+          <p class="muted">Move your cursor and watch the trailing shapes. Toggle them with the button above.</p>
+          <div style="height:160px;border-radius:10px;margin-top:10px;display:grid;place-items:center;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);font-weight:700">Try it!</div>
+        </div>
+        <div class="panel">
+          <div style="font-weight:800">Mini SVG Lab</div>
+          <p class="muted">Click the button in the right column of the hero to spawn an SVG demo.</p>
+          <div style="height:160px;border-radius:10px;margin-top:10px;display:grid;place-items:center;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);font-weight:700">Procedural</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2 class="headline">Contact & Credits</h2>
+      <p class="muted">This playful redesign created by your friendly maverick coder. Drop a star if you like it.</p>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <a class="btn" href="#" onclick="alert('Thanks! Open your repo and replace index.html with this file to deploy.')">Deploy</a>
+        <a class="btn" href="#" onclick="alert('Fork & explore — make it weirder.')">Fork</a>
+      </div>
+    </section>
+
+    <footer>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div>
+          <div style="font-weight:900;font-size:18px">Footer Arcade</div>
+          <div class="muted">A tiny mouse-driven minigame lives here. Pop colorful critters for points.</div>
+        </div>
+        <div class="game-wrap">
+          <div class="game-box panel">
+            <canvas id="gameCanvas" width="640" height="260" style="width:100%;height:160px;border-radius:10px;display:block"></canvas>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px">
+              <div class="score" id="score">Score: 0</div>
+              <div class="controls">
+                <div class="btn" id="startGame">Start</div>
+                <div class="btn" id="pauseGame">Pause</div>
+                <div class="btn" id="resetGame">Reset</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="min-width:240px;display:flex;flex-direction:column;gap:8px">
+            <div class="panel">
+              <div style="font-weight:700">How to play</div>
+              <ol style="margin:8px 0 0 16px">
+                <li>Click "Start".</li>
+                <li>Move your mouse and click on the colorful critters to pop them.</li>
+                <li>Some critters are sneaky — earning more points!</li>
+              </ol>
+            </div>
+            <div class="panel">
+              <div style="font-weight:700">High Scores</div>
+              <div id="highscores" class="muted" style="margin-top:6px">No games yet. Pop some critters!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
   </main>
 
-  <footer>
-    © 2025 DumbCoding – Made with HTML, CSS & AI
-  </footer>
+  <div class="modal" id="modal">
+    <div class="inner" id="modalInner"></div>
+  </div>
 
+  <script>
+    /*********** Decorative floaters ***********/
+    const floaters = document.querySelector('.floaters');
+    const COLORS = ['#ff6b6b','#ffd166','#6be3ff','#b06cff','#8cffb6','#ffd1ff'];
+    let floaterEls = [];
+    function makeFloaters(count=18){
+      floaters.innerHTML = '';
+      floaterEls = [];
+      for(let i=0;i<count;i++){
+        const e = document.createElement('div');
+        e.className='floater';
+        e.style.left = Math.random()*100+'%';
+        e.style.top = Math.random()*100+'%';
+        const s = 8 + Math.round(Math.random()*22);
+        e.style.width = s+'px'; e.style.height = s+'px';
+        e.style.borderRadius = (Math.random()>0.6? '50%':'4px');
+        e.style.background = COLORS[Math.floor(Math.random()*COLORS.length)];
+        e.style.opacity = 0.6 + Math.random()*0.5;
+        e.style.transform = `translateY(${Math.random()*20}px) rotate(${Math.random()*360}deg)`;
+        floaters.appendChild(e);
+        floaterEls.push(e);
+      }
+    }
+    makeFloaters(22);
+    let floatersOn = true;
+    function animateFloaters(){
+      floaterEls.forEach((el,i)=>{
+        const t = Date.now()/2000 + i;
+        const x = Math.sin(t*0.9+i)*30;
+        const y = Math.cos(t*0.7+i)*18;
+        el.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${(t*40)%360}deg)`;
+      });
+      requestAnimationFrame(animateFloaters);
+    }
+    requestAnimationFrame(animateFloaters);
+
+    /*********** palette color control ***********/
+    document.querySelectorAll('.swatch').forEach(s => s.addEventListener('click', e=>{
+      const c = e.currentTarget.dataset.color;
+      document.documentElement.style.setProperty('--accent1', c);
+      // slightly shift other accents
+      document.documentElement.style.setProperty('--accent2', shade(c,20));
+      document.documentElement.style.setProperty('--accent3', shade(c,-30));
+    }));
+
+    function shade(hex, percent){
+      // simple hex shade utility
+      hex = hex.replace('#','');
+      const num = parseInt(hex,16);
+      let r = (num>>16)+Math.round(255*percent/100);
+      let g = ((num>>8)&0x00FF)+Math.round(255*percent/100);
+      let b = (num&0x0000FF)+Math.round(255*percent/100);
+      r=Math.max(0,Math.min(255,r));g=Math.max(0,Math.min(255,g));b=Math.max(0,Math.min(255,b));
+      return '#'+(r<<16|g<<8|b).toString(16).padStart(6,'0');
+    }
+
+    /*********** nav scroll handlers ***********/
+    document.querySelectorAll('[data-scroll]').forEach(n=>n.addEventListener('click',e=>{
+      const id = e.currentTarget.dataset.scroll;
+      const el = document.getElementById(id);
+      if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+    }));
+
+    /*********** cards -> modal ***********/
+    const modal = document.getElementById('modal');
+    const modalInner = document.getElementById('modalInner');
+    document.querySelectorAll('.gig').forEach(card=>card.addEventListener('click',e=>{
+      const title = card.dataset.title; const desc=card.dataset.desc;
+      modalInner.innerHTML = `<h3 style="margin-top:0" class='headline'>${title}</h3><p class='muted'>${desc}</p><div style='height:240px;margin-top:12px;border-radius:8px;background:linear-gradient(135deg, rgba(255,255,255,0.02),transparent);display:grid;place-items:center'>${title} demo</div>`;
+      modal.style.display='grid';
+    }));
+    modal.addEventListener('click',()=>modal.style.display='none');
+
+    /*********** surprise button ***********/
+    document.getElementById('surpriseBtn').addEventListener('click',()=>{
+      const fun = [()=>playHeadline(), ()=>toggleFloaters(), ()=>openGallery()];
+      const f = fun[Math.floor(Math.random()*fun.length)]; f();
+    });
+    function playHeadline(){
+      const el = document.getElementById('headline');
+      el.animate([{transform:'scale(1)'},{transform:'scale(1.08) rotate(-2deg)'},{transform:'scale(1)'}],{duration:900,iterations:1,easing:'cubic-bezier(.2,.9,.2,1)'});
+    }
+    function openGallery(){
+      document.getElementById('gallery').scrollIntoView({behavior:'smooth'});
+    }
+
+    document.getElementById('toggleFloat').addEventListener('click',toggleFloaters);
+    function toggleFloaters(){
+      floatersOn = !floatersOn;
+      document.querySelector('.floaters').style.opacity = floatersOn? '1':'0';
+    }
+
+    document.getElementById('openGallery').addEventListener('click',openGallery);
+
+    /*********** tilt card microinteraction ***********/
+    const tiltCard = document.getElementById('card-tilt');
+    tiltCard.addEventListener('mousemove', (ev)=>{
+      const r = tiltCard.getBoundingClientRect();
+      const mx = (ev.clientX - r.left) / r.width - 0.5;
+      const my = (ev.clientY - r.top) / r.height - 0.5;
+      tiltCard.style.transform = `perspective(700px) rotateX(${my*8}deg) rotateY(${mx*12}deg)`;
+    });
+    tiltCard.addEventListener('mouseleave', ()=> tiltCard.style.transform='');
+
+    /*********** procedural SVG lab card ***********/
+    const svgBtn = document.getElementById('card-spark');
+    svgBtn.addEventListener('click', ()=>{
+      modalInner.innerHTML = `<h3 class='headline'>Procedural SVG Lab</h3><p class='muted'>A quick blob and star generator.</p><div id='svgholder' style='height:360px;border-radius:10px;margin-top:10px;display:grid;place-items:center;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)'></div>`;
+      modal.style.display='grid';
+      const holder = document.getElementById('svgholder');
+      holder.innerHTML = makeSVGBlob();
+    });
+    function makeSVGBlob(){
+      const w=680,h=320;
+      const rx=Math.random()*220+120;
+      const ry=Math.random()*120+80;
+      const cx= Math.random()*(w-200)+100; const cy = Math.random()*(h-120)+60;
+      const col = COLORS[Math.floor(Math.random()*COLORS.length)];
+      return `<svg viewBox='0 0 ${w} ${h}' width='100%' style='border-radius:8px'><defs><filter id='g' x='-50%' y='-50%'><feGaussianBlur stdDeviation='18' /></filter></defs><g filter='url(#g)'><ellipse cx='${cx}' cy='${cy}' rx='${rx}' ry='${ry}' fill='${col}' opacity='0.95'/></g><g transform='translate(40,40)'><text x='0' y='28' font-size='20' font-weight='800' fill='rgba(255,255,255,0.9)'>Procedural blob — try another card</text></g></svg>`;
+    }
+
+    /*********** pointer trails (simple) ***********/
+    const trail = [];
+    const maxTrail=22;
+    document.addEventListener('pointermove', e=>{
+      if(!floatersOn) return;
+      const t={x:e.clientX,y:e.clientY,ts:Date.now(),c:COLORS[Math.floor(Math.random()*COLORS.length)]};
+      trail.push(t); if(trail.length>maxTrail) trail.shift();
+      // create quick tiny dot
+      const dot = document.createElement('div'); dot.className='floater'; dot.style.left=(e.clientX-6)+'px'; dot.style.top=(e.clientY-6)+'px'; dot.style.width='12px'; dot.style.height='12px'; dot.style.borderRadius='50%'; dot.style.background=t.c; dot.style.opacity='0.9'; dot.style.pointerEvents='none'; dot.style.position='fixed'; dot.style.zIndex=60; document.body.appendChild(dot);
+      setTimeout(()=>dot.remove(),400);
+    });
+
+    /*********** Footer minigame: pop critters ***********/
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    let W = canvas.width, H = canvas.height;
+    function resizeCanvas(){
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.floor(rect.width*devicePixelRatio);
+      canvas.height = Math.floor(rect.height*devicePixelRatio);
+      ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+      W = rect.width; H = rect.height;
+    }
+    resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+
+    class Critter{
+      constructor(){
+        this.reset();
+      }
+      reset(){
+        this.r = 12 + Math.random()*28;
+        this.x = Math.random()*(W-2*this.r)+this.r;
+        this.y = Math.random()*(H-2*this.r)+this.r;
+        this.vx = (Math.random()-0.5)*120;
+        this.vy = (Math.random()-0.5)*120;
+        this.hue = Math.random()*360;
+        this.wiggle = Math.random()*Math.PI*2;
+        this.points = Math.round(1 + (40/this.r));
+        this.alive = true;
+      }
+      step(dt){
+        this.x += this.vx*dt; this.y += this.vy*dt;
+        this.vx *= 0.998; this.vy *= 0.998;
+        this.wiggle += dt*6;
+        if(this.x < this.r){this.x=this.r; this.vx *= -1}
+        if(this.x > W-this.r){this.x=W-this.r; this.vx *= -1}
+        if(this.y < this.r){this.y=this.r; this.vy *= -1}
+        if(this.y > H-this.r){this.y=H-this.r; this.vy *= -1}
+      }
+      draw(ctx){
+        ctx.save();
+        ctx.translate(this.x,this.y);
+        ctx.rotate(Math.sin(this.wiggle)*0.2);
+        // body
+        ctx.beginPath(); ctx.arc(0,0,this.r,0,Math.PI*2); ctx.fillStyle = `hsl(${this.hue} 90% 60%)`; ctx.fill();
+        // eye
+        ctx.beginPath(); ctx.arc(this.r*0.3*-1, -this.r*0.2, Math.max(2,this.r*0.18),0,Math.PI*2); ctx.fillStyle='#031b1f'; ctx.fill();
+        // highlight
+        ctx.beginPath(); ctx.arc(this.r*0.3, -this.r*0.3, Math.max(1,this.r*0.12),0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    let critters = [];
+    const MAX_CRITTERS = 9;
+    let last = performance.now();
+    let running = false;
+    let score = 0;
+    const scoreEl = document.getElementById('score');
+    const hsEl = document.getElementById('highscores');
+    const highs = [];
+
+    function spawnCritter(){ if(critters.length<MAX_CRITTERS) critters.push(new Critter()); }
+    function stepGame(now){
+      const dt = Math.min(0.04,(now-last)/1000);
+      last = now; if(!running) return;
+      // spawn slowly
+      if(Math.random() < 0.02) spawnCritter();
+      critters.forEach(c=>c.step(dt));
+      // render
+      ctx.clearRect(0,0,W,H);
+      // background bubbles
+      for(let i=0;i<6;i++){
+        ctx.beginPath(); ctx.ellipse(W*(i/6), H*(0.12 + (i%2)*0.15), 20, 8, 0,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,0.02)'; ctx.fill();
+      }
+      critters.forEach(c=>c.draw(ctx));
+      requestAnimationFrame(stepGame);
+    }
+
+    canvas.addEventListener('click', (e)=>{
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX - rect.left);
+      const y = (e.clientY - rect.top);
+      // find hit critter
+      for(let i=critters.length-1;i>=0;i--){
+        const c = critters[i];
+        const dx = c.x - x, dy = c.y - y;
+        if(dx*dx + dy*dy <= c.r*c.r){
+          // pop!
+          score += c.points;
+          scoreEl.textContent = 'Score: '+score;
+          // tiny pop particles
+          for(let p=0;p<10;p++){ spawnSpark(x,y); }
+          critters.splice(i,1);
+          break;
+        }
+      }
+    });
+
+    // simple sparks
+    const sparks = [];
+    function spawnSpark(x,y){ sparks.push({x,y, vx:(Math.random()-0.5)*200, vy:(Math.random()-0.9)*200, life:0.6 + Math.random()*0.6, col:COLORS[Math.floor(Math.random()*COLORS.length)]}); }
+    function stepSparks(dt){ for(let i=sparks.length-1;i>=0;i--){ const s=sparks[i]; s.x+=s.vx*dt; s.y+=s.vy*dt; s.life -= dt; if(s.life<=0) sparks.splice(i,1); } }
+    function drawSparks(ctx){ sparks.forEach(s=>{ ctx.beginPath(); ctx.arc(s.x,s.y,4,0,Math.PI*2); ctx.fillStyle=s.col; ctx.fill(); }) }
+
+    function gameLoop(now){ const dt = Math.min(0.04,(now-last)/1000); last=now; if(running){ critters.forEach(c=>c.step(dt)); stepSparks(dt); }
+      // draw
+      ctx.clearRect(0,0,W,H);
+      critters.forEach(c=>c.draw(ctx)); drawSparks(ctx);
+      requestAnimationFrame(gameLoop);
+    }
+
+    document.getElementById('startGame').addEventListener('click', ()=>{
+      if(!running){ running=true; last=performance.now(); for(let i=0;i<4;i++) spawnCritter(); requestAnimationFrame(gameLoop); }
+    });
+    document.getElementById('pauseGame').addEventListener('click', ()=>{ running = !running; document.getElementById('pauseGame').textContent = running? 'Pause':'Resume'; if(running) { last = performance.now(); requestAnimationFrame(gameLoop) }});
+    document.getElementById('resetGame').addEventListener('click', ()=>{ running=false; critters=[]; score = 0; scoreEl.textContent='Score: 0'; highs.unshift(score); while(highs.length>5) highs.pop(); hsEl.textContent = highs.length? highs.join(' • '): 'No games yet. Pop some critters!'; document.getElementById('pauseGame').textContent='Pause'; });
+
+    // simple loop to keep canvas lively even when not running
+    requestAnimationFrame(gameLoop);
+
+    /*********** accessibility small touches ***********/
+    // allow keyboard to close modal
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') modal.style.display='none' });
+
+    /*********** small utilities for page polish ***********/
+    // random wiggle to headline color on hover
+    const hd = document.getElementById('headline');
+    hd.addEventListener('mouseenter', ()=>{
+      hd.style.transition='filter .6s, transform .6s';
+      hd.style.filter='hue-rotate(40deg)';
+      hd.animate([{transform:'scale(1)'},{transform:'scale(1.06) rotate(-2deg)'},{transform:'scale(1)'}],{duration:900,iterations:1});
+    });
+    hd.addEventListener('mouseleave', ()=>{ hd.style.filter=''; });
+
+    // gentle periodic style change
+    setInterval(()=>{
+      document.documentElement.style.setProperty('--accent2', COLORS[Math.floor(Math.random()*COLORS.length)]);
+    }, 4500);
+
+  </script>
 </body>
 </html>
